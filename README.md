@@ -1,5 +1,5 @@
 
-# 🖼️ AI Image Caption Generator (BLIP Powered)
+# 🖼️ AI Image Caption Generator
 
 An advanced Streamlit-based application that allows you to upload and edit images, and generate intelligent captions using the powerful BLIP (Bootstrapped Language Image Pretraining) model from Salesforce.
 

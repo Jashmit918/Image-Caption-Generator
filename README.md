@@ -8,7 +8,7 @@ An advanced Streamlit-based application that allows you to upload and edit image
 ## 🚀 Features
 
 - ✨ Generate best and alternative captions for any image
-- 🎛️ Image editing: crop, rotate, flip, adjust brightness/contrast
+- 🎛️ Image editing: crop, rotate, flip, adjust brightness & contrast
 - 🤖 Uses the `Salesforce/blip-image-captioning-base` model
 - 📊 Image analysis (brightness, contrast, dominant color, histogram)
 - 🧠 Advanced options: beam search, sampling, custom prompts

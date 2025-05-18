@@ -1,23 +1,23 @@
 
-# 🖼️ AI Image Caption Generator
+# AI Image Caption Generator
 
 An advanced Streamlit-based application that allows you to upload and edit images, and generate intelligent captions using the powerful BLIP (Bootstrapped Language Image Pretraining) model from Salesforce.
 
 ---
 
-## 🚀 Features
+## Features
 
-- ✨ Generate best and alternative captions for any image
-- 🎛️ Image editing: crop, rotate, flip, adjust brightness & contrast
-- 🤖 Uses the `Salesforce/blip-image-captioning-base` model
-- 📊 Image analysis (brightness, contrast, dominant color, histogram)
-- 🧠 Advanced options: beam search, sampling, custom prompts
-- 📥 Download caption and edited image
-- ⚙️ Runs on CPU or GPU automatically
+- Generate best and alternative captions for any image
+- Image editing: crop, rotate, flip, adjust brightness & contrast
+- Uses the `Salesforce/blip-image-captioning-base` model
+- Image analysis (brightness, contrast, dominant color, histogram)
+- Advanced options: beam search, sampling, custom prompts
+- Download caption and edited image
+- Runs on CPU or GPU automatically
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 - Python 3.8 or later
@@ -40,7 +40,7 @@ numpy
 
 ---
 
-## 🧑‍💻 Run the App
+## Run the App
 ```bash
 streamlit run app.py
 ```
@@ -49,7 +49,7 @@ The app will open in your default web browser.
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 | Editor & Upload | Caption Generator |
 |-----------------|-------------------|
@@ -57,10 +57,10 @@ The app will open in your default web browser.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-📦 project-root/
+project-root/
 ├── app.py                 # Main Streamlit application
 ├── README.md              # Project documentation
 ├── requirements.txt       # Dependencies
@@ -68,7 +68,7 @@ The app will open in your default web browser.
 
 ---
 
-## 👥 Team AI-nstein
+## Team AI-nstein
 
 - Sukanti Soren
 - Jashmit Mansingh
@@ -78,7 +78,7 @@ The app will open in your default web browser.
 
 ---
 
-## 🧠 Model Details
+## Model Details
 
 - **Model**: `Salesforce/blip-image-captioning-base`
 - **Framework**: PyTorch
@@ -87,7 +87,7 @@ The app will open in your default web browser.
 
 ---
 
-## 💡 Future Improvements
+## Future Improvements
 
 - Save captions as PDF
 - User history and logs
@@ -95,6 +95,6 @@ The app will open in your default web browser.
 
 ---
 
-## 📜 License
+## License
 
 MIT License © 2025 Team AI-nstein

@@ -79,7 +79,7 @@ The app will open in your default web browser.
 
 ### Caption Text (Downloadable .txt file)
 
-##### User can easily export the generated text on local storage in .txt format
+##### User can easily export the generated caption text on local storage in .txt format
 
 <img src="assets/downloadedText.png" width="400" alt="Caption Text">
 

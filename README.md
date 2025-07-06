@@ -65,11 +65,11 @@ The app will open in your default web browser.
 
 ####  _Generated Caption 2_
 
-<img src="assets/Example 1.png" width="400" alt="Generated Caption 2">
+<img src="assets/Example1.png" width="400" alt="Generated Caption 2">
 
 ####  _Generated Caption 3_
 
-<img src="assets/Example 2.png" width="400" alt="Generated Caption 3">
+<img src="assets/Example2.png" width="400" alt="Generated Caption 3">
 
 ### _Sidebar_
 

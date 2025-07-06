@@ -51,9 +51,12 @@ The app will open in your default web browser.
 
 ## Screenshots
 
-| Editor & Upload | Caption Generator |
-|-----------------|-------------------|
-| ![Edit](https://via.placeholder.com/300x200.png?text=Editor) | ![Caption](https://via.placeholder.com/300x200.png?text=Caption) |
+###  _Home Page_
+
+##### The main screen of the AI-powered Image Caption Generator app.
+
+<img src="assets/UI.png" width="400" alt="Status Page">
+
 
 ---
 

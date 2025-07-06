@@ -412,8 +412,6 @@ def main():
                 st.error(f"Error processing image: {str(e)}")
         else:
             st.info("ℹ️ Please upload an image to begin")
-            st.image("https://via.placeholder.com/600x400?text=Upload+an+image", 
-                    caption="Example Image", use_column_width=True)
     
     with col2:
         st.subheader("📝 Caption Generator")

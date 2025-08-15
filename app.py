@@ -10,7 +10,6 @@ import numpy as np
 from io import BytesIO
 import matplotlib.pyplot as plt
 
-# Set page config
 st.set_page_config(
     page_title="AI Image Captioner",
     page_icon="🤖",
@@ -18,7 +17,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
 def local_css():
     st.markdown("""
     <style>
@@ -82,7 +80,6 @@ def local_css():
 
 local_css()
 
-# Cache the model loading to improve performance
 @st.cache_resource(show_spinner=False)
 def load_model():
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -97,7 +94,6 @@ def load_model():
         st.error(f"Failed to load model: {str(e)}")
         return None, None, None
 
-# Image editing functions
 def rotate_image(image: Image.Image, degrees: int) -> Image.Image:
     return image.rotate(degrees, expand=True)
 
@@ -118,7 +114,6 @@ def flip_image(image: Image.Image, direction: str) -> Image.Image:
     else:
         return ImageOps.flip(image)
 
-# Caption generation functions
 def generate_caption(image: Image.Image, processor, model, device, 
                     text: Optional[str] = None, 
                     max_length: int = 30, 
@@ -127,10 +122,8 @@ def generate_caption(image: Image.Image, processor, model, device,
     try:
         start_time = time.time()
         
-        # Preprocess the image
         inputs = processor(image, text, return_tensors="pt").to(device)
         
-        # Generate caption with configurable parameters
         out = model.generate(
             **inputs, 
             max_length=max_length,
@@ -138,7 +131,6 @@ def generate_caption(image: Image.Image, processor, model, device,
             early_stopping=True
         )
         
-        # Decode the caption
         caption = processor.decode(out[0], skip_special_tokens=True)
         
         processing_time = time.time() - start_time
@@ -153,8 +145,7 @@ def generate_multiple_captions(image: Image.Image, processor, model, device,
     """Generate multiple diverse captions using nucleus sampling"""
     try:
         inputs = processor(image, text, return_tensors="pt").to(device)
-        
-        # Generate diverse captions
+
         outputs = model.generate(
             **inputs,
             max_length=30,
@@ -196,7 +187,7 @@ def get_dominant_color(image: Image.Image) -> str:
 
 def show_model_info(processor, model, device):
     """Display detailed model information"""
-    with st.expander("🧠 Model Details", expanded=False):
+    with st.expander("Model Details", expanded=False):
         st.write(f"**Model Name:** BLIP Image Captioning Base")
         st.write(f"**Framework:** PyTorch")
         st.write(f"**Device:** {device.upper()}")
@@ -204,7 +195,6 @@ def show_model_info(processor, model, device):
         st.write(f"**Parameters:** {sum(p.numel() for p in model.parameters()):,}")
         st.write(f"**Input Size:** {processor.image_processor.size}")
         
-        # Memory usage
         if device == "cuda":
             mem_alloc = torch.cuda.memory_allocated() / 1024**2
             mem_reserved = torch.cuda.memory_reserved() / 1024**2
@@ -219,17 +209,15 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Load model
-    with st.spinner("⚙️ Loading Project... Please wait."):
+    with st.spinner("Loading Project... Please wait."):
         processor, model, device = load_model()
     
     if processor is None or model is None:
         st.error("Failed to load the model. Please check your internet connection or try again later.")
         return
-    
-    # Sidebar with advanced options
+
     with st.sidebar:
-        st.header("⚙️ Settings")
+        st.header("Settings")
         
         with st.expander("Caption Generation", expanded=True):
             text_prompt = st.text_input(
@@ -265,7 +253,7 @@ def main():
         with st.expander("Image Editing", expanded=True):
             edit_tabs = st.tabs(["Basic", "Adjustments", "Crop"])
             
-            with edit_tabs[0]:  # Basic edits
+            with edit_tabs[0]:
                 rotate_deg = st.slider(
                     "Rotation (degrees)", 
                     -180, 180, 0,
@@ -277,7 +265,7 @@ def main():
                     help="Flip the image horizontally or vertically"
                 )
             
-            with edit_tabs[1]:  # Adjustments
+            with edit_tabs[1]:
                 brightness = st.slider(
                     "Brightness", 
                     0.5, 1.5, 1.0,
@@ -289,7 +277,7 @@ def main():
                     help="Adjust image contrast"
                 )
             
-            with edit_tabs[2]:  # Crop
+            with edit_tabs[2]:
                 crop_enabled = st.checkbox("Enable Crop", False)
                 if crop_enabled:
                     cols = st.columns(4)
@@ -329,11 +317,10 @@ def main():
         
         
 
-    # Main content area
     col1, col2 = st.columns([1, 1], gap="medium")
     
     with col1:
-        st.subheader("🖼️ Image Editor & Upload")
+        st.subheader("Image Editor & Upload")
         uploaded_file = st.file_uploader(
             "Choose an image...", 
             type=["jpg", "jpeg", "png", "webp"],
@@ -345,8 +332,7 @@ def main():
             try:
                 original_image = Image.open(uploaded_file).convert("RGB")
                 edited_image = original_image.copy()
-                
-                # Apply all edits
+     
                 with st.spinner("Applying edits..."):
                     if rotate_deg != 0:
                         edited_image = rotate_image(edited_image, rotate_deg)
@@ -359,17 +345,15 @@ def main():
                     if crop_enabled:
                         edited_image = crop_image(edited_image, left, top, right, bottom)
                 
-                # Show edit comparison
-                st.subheader("🔄 Edit Comparison")
+                st.subheader("Edit Comparison")
                 compare_cols = st.columns(2)
                 with compare_cols[0]:
                     st.image(original_image, caption="Original Image", use_column_width=True)
                 with compare_cols[1]:
                     st.image(edited_image, caption="Edited Image", use_column_width=True)
-                
-                # Image analysis section
+
                 if show_analysis:
-                    with st.expander("🔍 Image Analysis", expanded=True):
+                    with st.expander("Image Analysis", expanded=True):
                         analysis = analyze_image(edited_image)
                         
                         col1a, col2a = st.columns(2)
@@ -380,28 +364,24 @@ def main():
                         with col2a:
                             st.metric("Edge Detail", analysis['edges'])
                             st.metric("Dominant Color", analysis['dominant_color'])
-                            
-                            # Simple histogram
+             
                             fig, ax = plt.subplots()
                             ax.hist(np.array(edited_image.convert("L")).ravel(), bins=50, color='blue', alpha=0.7)
                             ax.set_title('Pixel Intensity Distribution')
                             st.pyplot(fig)
-                
-                # Debug info
                 if show_debug:
-                    with st.expander("🐛 Debug Information", expanded=False):
+                    with st.expander("Debug Information", expanded=False):
                         st.write(f"Image format: {original_image.format}")
                         st.write(f"Original size: {original_image.size}")
                         st.write(f"Edited size: {edited_image.size}")
                         st.write(f"Image mode: {original_image.mode}")
                 
-                # Save edited image
                 buf = BytesIO()
                 edited_image.save(buf, format="JPEG")
                 byte_im = buf.getvalue()
                 
                 st.download_button(
-                    label="💾 Download Edited Image",
+                    label="Download Edited Image",
                     data=byte_im,
                     file_name="edited_image.jpg",
                     mime="image/jpeg",
@@ -411,38 +391,35 @@ def main():
             except Exception as e:
                 st.error(f"Error processing image: {str(e)}")
         else:
-            st.info("ℹ️ Please upload an image to begin")
+            st.info("Please upload an image to begin")
     
     with col2:
-        st.subheader("📝 Caption Generator")
+        st.subheader("Caption Generator")
         
         if uploaded_file is not None and 'edited_image' in locals():
-            if st.button("✨ Generate Captions", use_container_width=True):
-                with st.spinner("🧠 Generating captions... This may take a moment"):
-                    # Generate primary caption
+            if st.button("Generate Captions", use_container_width=True):
+                with st.spinner("Generating captions... This may take a moment"):
+           
                     primary_caption, processing_time = generate_caption(
                         edited_image, processor, model, device, 
                         text_prompt, max_length, num_beams
                     )
-                    
-                    # Generate multiple caption variants
+  
                     caption_variants = generate_multiple_captions(
                         edited_image, processor, model, device,
                         text_prompt, num_captions
                     )
                 
                 if primary_caption:
-                    # Display primary caption
                     st.markdown(f"""
                     <div class="caption-box">
-                        <h4 style="color:red;">🌟 Best Caption</h4>
+                        <h4 style="color:red;">Best Caption</h4>
                         <p>{primary_caption}</p>
                     </div>
                     """, unsafe_allow_html=True)
-                    
-                    # Display caption variants
+  
                     if len(caption_variants) > 1:
-                        st.markdown("#### 🔄 Alternative Captions")
+                        st.markdown("#### Alternative Captions")
                         for i, caption in enumerate(caption_variants[1:], 1):
                             st.markdown(f"""
                             <div class="caption-box" style="border-left-color: #7eb0d5;">
@@ -450,8 +427,7 @@ def main():
                             </div>
                             """, unsafe_allow_html=True)
                     
-                    # Performance metrics
-                    with st.expander("📊 Performance Metrics", expanded=False):
+                    with st.expander("Performance Metrics", expanded=False):
                         col1b, col2b, col3b = st.columns(3)
                         with col1b:
                             st.metric("Processing Time", f"{processing_time:.2f} seconds")
@@ -459,10 +435,9 @@ def main():
                             st.metric("Caption Length", f"{len(primary_caption.split())} words")
                         with col3b:
                             st.metric("Model Device", device.upper())
-                    
-                    # Export options
+      
                     st.markdown("---")
-                    st.markdown("#### 💾 Export Options")
+                    st.markdown("#### Export Options")
                     col1c, col2c = st.columns(2)
                     with col1c:
                         st.download_button(
@@ -473,19 +448,15 @@ def main():
                             use_container_width=True
                         )
                     with col2c:
-                        # Create a PDF would require reportlab or similar
                         st.button("Save to PDF (Coming Soon)", disabled=True)
                 
                 else:
                     st.warning("Could not generate captions. Please try another image.")
-            
-            # Model information
+
             if show_model_details:
                 show_model_info(processor, model, device)
         else:
             st.info("Upload and edit an image first, then generate captions here")
-
-    # Footer
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; padding: 20px;">
@@ -496,3 +467,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
